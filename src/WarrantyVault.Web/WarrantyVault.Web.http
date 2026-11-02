@@ -1,0 +1,6 @@
+@WarrantyVault.Web_HostAddress = http://localhost:5189
+
+GET {{WarrantyVault.Web_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/WarrantyVault.Core/WarrantyVault.Core.csproj" />
+    <Project Path="src/WarrantyVault.Web/WarrantyVault.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/WarrantyVault.Tests/WarrantyVault.Tests.csproj" />
+  </Folder>
+</Solution>
