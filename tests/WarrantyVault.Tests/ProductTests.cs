@@ -7,6 +7,26 @@ namespace WarrantyVault.Tests;
 public class ProductTests
 {
     [Fact]
+    public void TwoProducts_ShouldHaveDifferentIds()
+    {
+        var product1 = new Product
+        {   
+            Name = "Móvil",
+            Brand = "Xiaomi",
+            Model = "Redmi Note 12 Pro"
+        };
+        
+        var product2 = new Product
+        {   
+            Name = "Auriculares",
+            Brand = "Apple",
+            Model = "AirPods pro"
+        };
+        
+        Assert.NotEqual(product1.Id, product2.Id);
+    }
+    
+    [Fact]
     public void Validate_NameIsWhitespace_ReturnsNameRequiredError()
     {
         var product = new Product
