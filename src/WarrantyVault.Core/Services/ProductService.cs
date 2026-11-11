@@ -13,7 +13,9 @@ public class ProductService
     }
 
     public List<ProductValidationError> Add(Product product)
-    {
+    {   
+        ArgumentNullException.ThrowIfNull(product);
+        
         var errors = ProductValidator.Validate(product);
 
         if (!errors.Any())
