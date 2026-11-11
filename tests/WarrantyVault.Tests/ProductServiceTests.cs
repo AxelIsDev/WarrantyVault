@@ -50,18 +50,16 @@ public class ProductServiceTests
         var errors = service.Add(product);
         
         Assert.Contains(ProductValidationError.NameRequired, errors);
+        Assert.Empty(service.GetAll());
     }
     
     [Fact]
     public void Add_NullProduct_ThrowsArgumentNullException()
     {
-        // Arrange
         Product product = null!;
 
-        // Act
         var action = () => service.Add(product);
-
-        // Assert
+        
         Assert.Throws<ArgumentNullException>(action);
     }
 }
