@@ -41,4 +41,18 @@ public class ProductsController: ControllerBase
         
         return StatusCode(201, product);
     }
+    
+    [HttpDelete("{id}")]
+    public IActionResult Delete(Guid id)
+    {
+        var result = _service.Delete(id);
+
+        if (result == false)
+        {
+            return NotFound();
+        }
+
+        return StatusCode(204);
+    }
+    
 }
