@@ -25,4 +25,18 @@ public class ProductService
         
         return errors;
     }
+
+    public bool Delete(Guid id)
+    {
+        var findProduct = _products.FirstOrDefault(p => p.Id == id);
+
+        if (findProduct == null)
+        {
+            return false;
+        }
+        
+        _products.Remove(findProduct);
+        return true;
+    }
+    
 }

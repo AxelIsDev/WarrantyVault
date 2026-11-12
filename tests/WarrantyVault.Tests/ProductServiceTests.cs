@@ -62,4 +62,42 @@ public class ProductServiceTests
         
         Assert.Throws<ArgumentNullException>(action);
     }
+    
+    [Fact]
+    public void Delete_ExistingProduct_RemovesItAndReturnsTrue()
+    {
+        var product = new Product
+        {
+            Name = "Silla Gaming",
+            Brand = "NewSkill",
+            Model = "Takamikura"
+        };
+        
+        service.Add(product);
+        
+        var result = service.Delete(product.Id);
+        
+        Assert.True(result);
+        
+        Assert.DoesNotContain(product, service.GetAll());
+    }
+    
+    [Fact]
+    public void Delete_UnknownId_ReturnsFalseAndKeepsList()
+    {
+        var product = new Product
+        {   
+            Name = "Videojuego",
+            Brand = "Nintendo",
+            Model = "The Legend Of Zelda: Ocarina Of Time Remake"
+        };
+        
+        service.Add(product);
+        
+        var result = service.Delete(Guid.NewGuid());
+        
+        Assert.False(result);
+
+        Assert.Single(service.GetAll());
+    }
 }
