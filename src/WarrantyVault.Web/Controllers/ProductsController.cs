@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using WarrantyVault.Core.Enums;
 using WarrantyVault.Core.Models;
 using WarrantyVault.Core.Services;
 using WarrantyVault.Web.Models;
@@ -23,7 +24,7 @@ public class ProductsController: ControllerBase
     }
     
     [HttpPost]
-    public ActionResult<Product> Create(CreateProductRequest request)
+    public ActionResult<Product> Create(ProductRequest request)
     {
         var product = new Product
         {
@@ -47,12 +48,36 @@ public class ProductsController: ControllerBase
     {
         var result = _service.Delete(id);
 
-        if (result == false)
+        if (!result)
         {
             return NotFound();
         }
 
-        return StatusCode(204);
+        return NoContent();
     }
     
+    [HttpPut("{id}")]
+    public IActionResult Update(Guid id, ProductRequest request)
+    {
+        var product = new Product
+        {
+            Name = request.Name,
+            Brand = request.Brand,
+            Model = request.Model
+        };
+        
+        var errors = _service.Update(id, product);
+        
+        if (errors.Contains(ProductValidationError.ProductNotFound))
+        {
+            return NotFound(errors);
+        }
+
+        if (errors.Any())
+        {
+            return BadRequest(errors);
+        }
+
+        return NoContent();
+    }
 }
