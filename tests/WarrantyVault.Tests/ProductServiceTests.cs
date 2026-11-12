@@ -100,4 +100,54 @@ public class ProductServiceTests
 
         Assert.Single(service.GetAll());
     }
+    
+    [Fact]
+    public void Update_ExistingProductWithValidData_UpdatesItAndReturnsNoErrors()
+    {
+      
+        var product = new Product { Name = "Cascos", Brand = "Logitech", Model = "G Pro X 2" };
+        service.Add(product);
+        var originalId = product.Id;
+
+        var updated = new Product { Name = "Ratón", Brand = "Razer", Model = "DeathAdder" };
+        var errors = service.Update(product.Id, updated);
+        
+        Assert.Empty(errors);                
+        Assert.Equal("Ratón", product.Name); 
+        Assert.Equal("Razer", product.Brand);
+        Assert.Equal("DeathAdder", product.Model);
+        Assert.Equal(originalId, product.Id);
+
+    }
+
+    [Fact]
+    public void Update_UnknownId_ReturnsProductNotFoundAndKeepsData()
+    {
+        var product = new Product { Name = "Cascos", Brand = "Logitech", Model = "G Pro X 2" };
+        service.Add(product);
+
+        var updated = new Product { Name = "Ratón", Brand = "Razer", Model = "DeathAdder" };
+        var unknownId = Guid.NewGuid();
+
+        var errors = service.Update(unknownId, updated);
+        Assert.Contains(ProductValidationError.ProductNotFound, errors);
+        Assert.Equal("Cascos", product.Name);
+    }
+
+    [Fact]
+    public void Update_InvalidData_ReturnsErrorsAndKeepsOriginalData()
+    {
+        var product = new Product { Name = "Cascos", Brand = "Logitech", Model = "G Pro X 2" };
+        service.Add(product);
+
+        var updated = new Product { Name = "   ", Brand = "Razer", Model = "DeathAdder" };
+
+        var errors = service.Update(product.Id, updated);
+
+        Assert.Contains(ProductValidationError.NameRequired, errors);
+        Assert.Equal("Cascos", product.Name);
+        Assert.Equal("Logitech", product.Brand);
+        Assert.Equal("G Pro X 2", product.Model);
+    }
+
 }

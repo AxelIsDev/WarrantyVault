@@ -5,4 +5,5 @@ public enum ProductValidationError
     NameRequired,
     BrandRequired,
     ModelRequired,
+    ProductNotFound,
 }

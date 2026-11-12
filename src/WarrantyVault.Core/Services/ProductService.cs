@@ -28,15 +28,39 @@ public class ProductService
 
     public bool Delete(Guid id)
     {
-        var findProduct = _products.FirstOrDefault(p => p.Id == id);
+        var product = _products.FirstOrDefault(p => p.Id == id);
 
-        if (findProduct == null)
+        if (product == null)
         {
             return false;
         }
         
-        _products.Remove(findProduct);
+        _products.Remove(product);
         return true;
+    }
+
+    public List<ProductValidationError> Update(Guid id, Product updated)
+    {   
+        var errors = ProductValidator.Validate(updated);
+        
+        var product = _products.FirstOrDefault(p => p.Id == id);
+
+        if (product == null)
+        {
+            return new List<ProductValidationError>
+            {
+                ProductValidationError.ProductNotFound   
+            };
+        }
+
+        if (!errors.Any())
+        {
+            product.Name = updated.Name;
+            product.Brand = updated.Brand;
+            product.Model = updated.Model;
+        }
+        
+        return errors;
     }
     
 }
